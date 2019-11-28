@@ -5,9 +5,7 @@ import (
 	"time"
 
 	"github.com/gethinyan/sso-check/models"
-	"github.com/gethinyan/sso-check/pkg/redis"
 	"github.com/gethinyan/sso-check/pkg/setting"
-	"github.com/gethinyan/sso-check/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
