@@ -1,0 +1,5 @@
+app:
+  jwt_secret: sso-check
+
+server:
+  http_port: 9091
