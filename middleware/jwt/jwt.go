@@ -1,11 +1,9 @@
 package jwt
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gethinyan/sso-check/rpcx"
-	"github.com/gethinyan/sso-server/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,8 +19,7 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 		// 带上 token 发 rpc 请求
-		c.user := rpcx.Authoration()
-		fmt.Println(user)
+		rpcx.Authoration(token)
 		c.Next()
 	}
 }

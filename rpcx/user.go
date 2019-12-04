@@ -3,6 +3,7 @@ package rpcx
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 
 	"github.com/gethinyan/sso-server/rpcx/services"
@@ -10,28 +11,28 @@ import (
 )
 
 var (
-	addr = flag.String("addr", "localhost:8972", "server address")
+	addr = flag.String("addr", "172.16.21.71:8972", "server address")
+	// Reply 响应参数
+	Reply *services.Reply
 )
 
 // Authoration 登录验证
-func Authoration() (reply *services.Reply, err error) {
+func Authoration(token string) {
 	flag.Parse()
-
 	d := client.NewPeer2PeerDiscovery("tcp@"+*addr, "")
-	xclient := client.NewXClient("Arith", client.Failtry, client.RandomSelect, d, client.DefaultOption)
+	xclient := client.NewXClient("Auth", client.Failtry, client.RandomSelect, d, client.DefaultOption)
 	defer xclient.Close()
 
 	args := &services.Args{
-		A: 10,
-		B: 20,
+		JsonWebToken: token,
 	}
+	fmt.Println(args)
 
-	err = xclient.Call(context.Background(), "Mul", args, reply)
+	reply := &services.Reply{}
+	err := xclient.Call(context.Background(), "CheckToken", args, reply)
 	if err != nil {
-		log.Fatalf("failed to call: %v", err)
+		log.Printf("failed to call: %v\n", err)
 	}
-
-	log.Printf("%d * %d = %d", args.A, args.B, reply.C)
-
-	return
+	fmt.Println(reply)
+	Reply = reply
 }
